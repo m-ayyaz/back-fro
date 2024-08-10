@@ -40,12 +40,6 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }} .
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}
 
-    - name: Build and push backend Docker image
-      run: |
-        cd backend
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }} .
-        docker push ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}
-
     - name: Configure kubeconfig for AWS EKS
       run: |
         aws eks --region us-east-1 update-kubeconfig --name demo
