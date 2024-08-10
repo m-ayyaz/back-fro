@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: backend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -15,16 +15,26 @@ spec:
     spec:
       containers:
       - name: backend
-        image: <your-dockerhub-username>/backend:latest
+        image: mayyazmunir/backend:latest
         ports:
         - containerPort: 3000
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoreDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - general
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: backend
   ports:
